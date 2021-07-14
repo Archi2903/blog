@@ -15,6 +15,32 @@ class CreateBlogPostsTable extends Migration
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
+
+            $table->integer('category_id')->unsigned();/*id категории к которой принадлежит пост(ссылка на другую таблицу)*/
+            $table->integer('user_id')->unsigned();/*id автора создавшего статью user_id связь с таблицой user обычно пишут author id изнес логика*/
+
+            $table->string('slug')->unique();
+            $table->string('title');
+
+            $table->text('excerpt')->nullable(); /* небольшая выдержка статьи немного из статьи имя автора дата*/
+
+            $table->text('content_raw');/* сырые данные */
+            $table->text('content_html');/* данные переформатированиие в html */
+
+            $table->boolean('is_published')->default(false);
+            $table->timestamp('published_at')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');/*Привязка колонки user_id по id к табице users */
+            $table->foreign('category_id')->references('id')->on('blog_categories');
+            $table->index('is_published');/*ставим index, так как мы будем по нему производить поиск ,выборку и . т .д*/
+
+
+
+
+
             $table->timestamps();
         });
     }
