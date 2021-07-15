@@ -33,9 +33,9 @@ class CreateBlogPostsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-
-            $table->foreign('category_id')->references('id')->on('blog_categories');
             $table->foreign('user_id')->references('id')->on('users');/*Привязка колонки user_id по id к табице users */
+            $table->foreign('category_id')->references('id')->on('blog_categories');
+
             $table->index('is_published');/*ставим index, так как мы будем по нему производить поиск ,выборку и . т .д*/
 
         });

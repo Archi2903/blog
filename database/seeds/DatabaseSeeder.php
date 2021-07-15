@@ -16,10 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UserSeeder::class);
-//        $this->call(UsersTableSeeder::class);
+
         $this->call(BlogCategoriesTableSeeder::class);
-        factory(User::class,2)->create();
-        factory(BlogPost::class,100)->create();
-//
+        /*обязательно в такой последовательности запускаем,иначе нарушается логика построения*/
+        factory(User::class, 2)->create();
+        /*запускается без ошибок,только если создан User*/
+        factory(BlogPost::class, 100)->create();
+
     }
 }
