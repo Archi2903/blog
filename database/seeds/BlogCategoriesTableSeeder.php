@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class BlogCategoriesTableSeeder extends Seeder
 {
@@ -9,8 +11,32 @@ class BlogCategoriesTableSeeder extends Seeder
      *
      * @return void
      */
+    /* генерирует  для BlogCategories title,slug,Родительское ID*/
     public function run()
     {
-        //
+        $categories = [];
+        /*Create first category, так как ParentID у нее 0(тоесть неккоректно,то ставим No category)  */
+        $cName = 'No category';
+        $categories[] = [
+            'title' => $cName,
+            'slug' => Str::slug($cName, ' '),
+            'parent_id' => 0,
+        ];
+
+        /*Формируем несколько категорий  ParentID must start from 1!*/
+        for ($i = 1; $i <= 10; $i++) {
+            /*  Names category */
+            $cName = 'Category #' . $i;
+            /* Родительское ID(будет присвоено категории) от 1 до 4(будет присвоено 1ParentID),
+             категориям больше 4 будет присвоено (ParentID рандом от 1 до 4)*/
+            $parentID = ($i > 4) ? rand(1, 4) : 1;
+            $categories[] = [
+                'title' => $cName,
+                'slug' => Str::slug($cName, ' '),
+                'parent_id' => $parentID,
+            ];
+        }
+        DB::table('blog_categories')->insert($categories);
+
     }
 }

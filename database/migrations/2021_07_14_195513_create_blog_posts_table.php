@@ -14,10 +14,10 @@ class CreateBlogPostsTable extends Migration
     public function up()
     {
         Schema::create('blog_posts', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
 
             $table->unsignedBigInteger('category_id');/*id категории к которой принадлежит пост(ссылка на другую таблицу)*/
-            $table->unsignedBigInteger('user_id');/*id автора создавшего статью user_id связь с таблицой user обычно пишут author id изнес логика*/
+            $table->unsignedBigInteger('user_id');/*id автора создавшего статью user_id связь с таблицой user обычно пишут author id бизнес логика*/
 
             $table->string('slug')->unique();
             $table->string('title');
@@ -33,8 +33,9 @@ class CreateBlogPostsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');/*Привязка колонки user_id по id к табице users */
+
             $table->foreign('category_id')->references('id')->on('blog_categories');
+            $table->foreign('user_id')->references('id')->on('users');/*Привязка колонки user_id по id к табице users */
             $table->index('is_published');/*ставим index, так как мы будем по нему производить поиск ,выборку и . т .д*/
 
         });
