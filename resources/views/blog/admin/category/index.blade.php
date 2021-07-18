@@ -18,7 +18,6 @@
                             </thead>
                             <tbody>
                             @foreach($paginate as $item)
-                                @php /** @var \App\BlogCategory $item */ @endphp
                                 <tr>
                                     <td>{{$item->id}}</td>
                                     <td>

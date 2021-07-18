@@ -27,7 +27,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        dd(__METHOD__);
+        dd(__METHOD__, 'create new category');
     }
 
     /**
@@ -38,7 +38,7 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        dd(__METHOD__);
+        dd(__METHOD__, 'store');
     }
 
 
@@ -50,7 +50,7 @@ class CategoryController extends BaseController
      */
     public function edit($id)
     {
-        dd(__METHOD__);
+        dd(__METHOD__, 'edit '. $id);
     }
 
     /**
@@ -62,7 +62,7 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        dd(__METHOD__);
+        dd(__METHOD__, 'update'. $id);
     }
 
 }
