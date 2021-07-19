@@ -13,6 +13,7 @@ class CategoryController extends BaseController
      *
      * @return Response
      */
+    //вывод всех категорий
     public function index()
     {
         $paginate = BlogCategory::paginate(5);
@@ -48,6 +49,7 @@ class CategoryController extends BaseController
      * @param int $id
      * @return Response
      */
+    //свойство редактирования
     public function edit($id)
     {
         /*нахождение единственного значения по id(есть несколько вариантов)*/
@@ -65,6 +67,7 @@ class CategoryController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
+    //свойство Сохранения
     public function update(Request $request, $id)
     {
         $item = BlogCategory::find($id);// вывод значения при выборе
