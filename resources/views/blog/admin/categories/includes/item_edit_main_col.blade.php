@@ -50,8 +50,8 @@
                                       id="description"
                                       class="form-control"
                                       rows="3"
-                                      required>
-                                {{$item->descriprion}}
+                                      placeholder="{{$item->description}}"
+                                      required> {{old('description',$item->descriprion)}}
                             </textarea>
                         </div>
                     </div>

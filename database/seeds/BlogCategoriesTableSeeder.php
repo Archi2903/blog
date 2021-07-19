@@ -15,8 +15,8 @@ class BlogCategoriesTableSeeder extends Seeder
     public function run()
     {
         $categories = [];
-        /*Create first category, так как ParentID у нее 0(тоесть неккоректно,то ставим No category)  */
-        $cName = 'No category';
+        /*Create first categories, так как ParentID у нее 0(тоесть неккоректно,то ставим No categories)  */
+        $cName = 'No categories';
         $categories[] = [
             'title' => $cName,
             'slug' => Str::slug($cName, ' '),
@@ -25,7 +25,7 @@ class BlogCategoriesTableSeeder extends Seeder
 
         /*Формируем несколько категорий  ParentID must start from 1!*/
         for ($i = 1; $i <= 10; $i++) {
-            /*  Names category */
+            /*  Names categories */
             $cName = 'Category #' . $i;
             /* Родительское ID(будет присвоено категории) от 1 до 4(будет присвоено 1ParentID),
              категориям больше 4 будет присвоено (ParentID рандом от 1 до 4)*/

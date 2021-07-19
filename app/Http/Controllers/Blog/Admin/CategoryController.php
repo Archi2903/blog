@@ -15,9 +15,9 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $paginate = BlogCategory::paginate(3);
+        $paginate = BlogCategory::paginate(5);
 
-        return view('blog.admin.category.index', compact('paginate'));
+        return view('blog.admin.categories.index', compact('paginate'));
     }
 
     /**
@@ -27,7 +27,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        dd(__METHOD__, 'create new category');
+        dd(__METHOD__, 'create new categories');
     }
 
     /**
@@ -55,7 +55,7 @@ class CategoryController extends BaseController
         //        $item[] = BlogCategory::find($id);
 //        $item[] = BlogCategory::where('id','>', $id)->first();
         $categoryList = BlogCategory::all();
-        return view('blog.admin.category.edit', compact('item', 'categoryList'));
+        return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
 
     /**
@@ -63,11 +63,31 @@ class CategoryController extends BaseController
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        dd(__METHOD__, $request->all(), $id);
+        $item = BlogCategory::find($id);// вывод значения при выборе
+        /* валидация на существование значения*/
+        if (empty($item)) {      //если наше значение пустое,то возвращение назад
+            return back()
+                ->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
+                ->withInput();// с сохранением данных в полях
+        }
+        /* получение данных после редактирования*/
+        $data = $request->all();
+        /* перезапись в исходные поля с сохранением*/
+        $result = $item->fill($data)->save();
+
+        if ($result) {
+            return redirect()
+                ->route('blog.admin.categories.edit', $item->id)
+                ->with(['success' => 'Успешно сохранено!']);
+        } else {
+            return back()
+                ->withErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
 
 }
