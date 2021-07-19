@@ -34,6 +34,7 @@ class BlogCategoriesTableSeeder extends Seeder
                 'title' => $cName,
                 'slug' => Str::slug($cName, ' '),
                 'parent_id' => $parentID,
+
             ];
         }
         DB::table('blog_categories')->insert($categories);
