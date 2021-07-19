@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form method="post" action="#">
+    <form method="post" action="{{route('blog.admin.categories.update', $item->id)}}">
         @method('PATCH')
         @csrf
         <div class="container">
