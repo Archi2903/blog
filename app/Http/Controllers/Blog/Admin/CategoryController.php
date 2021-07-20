@@ -6,6 +6,7 @@ use App\BlogCategory;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class CategoryController extends BaseController
 {
@@ -29,7 +30,10 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        dd(__METHOD__, 'create new categories');
+        $item = new BlogCategory();
+        $categoryList = BlogCategory::all();
+
+        return view('blog.admin.categories.edit', compact('categoryList', 'item'));
     }
 
     /**
@@ -38,10 +42,28 @@ class CategoryController extends BaseController
      * @param \Illuminate\Http\Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(BlogCategoryUpdateRequest $request)
     {
-        dd(__METHOD__, 'store');
+        $data = $request->input();
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']);
+        }
+
+        // Создаст обьект но не добавит в БД
+//        $item = new BlogCategory($data);
+//        $item->save();
+
+        $item = (new BlogCategory())->create($data);
+
+        if ($item) {
+            return redirect()->route('blog.admin.categories.edit', [$item->id])
+                ->with(['success' => 'Успешно сохранено!']);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
+
 
 
     /**
@@ -50,8 +72,9 @@ class CategoryController extends BaseController
      * @param int $id
      * @return Response
      */
-    //свойство редактирования
-    public function edit($id)
+//свойство редактирования
+    public
+    function edit($id)
     {
         /*нахождение единственного значения по id(есть несколько вариантов)*/
         $item = BlogCategory::findOrFail($id);
@@ -68,9 +91,10 @@ class CategoryController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    //свойство Сохранения
+//свойство Сохранения
     /*Добавили валидацию,BlogCategoryUpdateRequest новый созданный request*/
-    public function update(BlogCategoryUpdateRequest $request, $id)
+    public
+    function update(BlogCategoryUpdateRequest $request, $id)
     {
         /*Validate все 3 версии не корректные */
 //        $rules = [
@@ -101,8 +125,6 @@ class CategoryController extends BaseController
 //        $validatedData[] = $validator->errors();
         // вывод true или false ,на наличие ошибки true - если есть ошибка
 //        $validatedData[] = $validator->fails();
-
-
         $item = BlogCategory::find($id);// вывод значения при выборе
         /* валидация на существование значения*/
         if (empty($item)) {      //если наше значение пустое,то возвращение назад
@@ -125,5 +147,7 @@ class CategoryController extends BaseController
                 ->withInput();
         }
     }
-
 }
+
+
+
