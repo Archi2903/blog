@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Validator;
 
 class CategoryController extends BaseController
 {
@@ -70,6 +71,38 @@ class CategoryController extends BaseController
     //свойство Сохранения
     public function update(Request $request, $id)
     {
+        /*Validate*/
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'slug' => 'max:200',
+            'description' => 'string|max:500|min:3',
+            'parent_id' => 'required|integer|exists:blog_categories,id',
+        ];
+        /* все 3 версии не корректные */
+        /* 1 version validate
+        // $validatedData=$this->validate($request,$rules); */
+        /* 2 version validate */
+        //$validatedData = $request->validate($rules);
+        /* 3 version validate
+        //Create class validator
+        $validator = \Validator::make($request->all(), $rules);
+        //Проверяет все поля и выводит общий true или false(не показывает над каким полем не прошла валидацию)
+        $validatedData[] = $validator->passes();
+        //проверка полей c редиректом на туже страницу ,с выводом $errors
+//        $validatedData[]=$validator->validate();
+        //проверка полей, с выводом через dd(), показывает поле,которое не прошло валидацию
+        $validatedData[] = $validator->invalid();
+        //проверка полей, с выводом через dd(), показывает поле,которые прошли валидацию
+        $validatedData[] = $validator->valid();
+        // проверка полей и вывод имени поля не прошедшего валидацию и его условие выполнения ,через dd()
+        $validatedData[] = $validator->failed();
+        // проверка полей и вывод имени поля не прошедшего валидацию и вывод правил по которым оно должно выполняться dd()
+        $validatedData[] = $validator->errors();
+        // вывод true или false ,на наличие ошибки true - если есть ошибка
+        $validatedData[] = $validator->fails();
+        */
+        dd($validatedData);
+
         $item = BlogCategory::find($id);// вывод значения при выборе
         /* валидация на существование значения*/
         if (empty($item)) {      //если наше значение пустое,то возвращение назад
