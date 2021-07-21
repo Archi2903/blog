@@ -24,7 +24,7 @@ class BlogCategoriesTableSeeder extends Seeder
         ];
 
         /*Формируем несколько категорий  ParentID must start from 1!*/
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 2; $i <= 11; $i++) {
             /*  Names categories */
             $cName = 'Category #' . $i;
             /* Родительское ID(будет присвоено категории) от 1 до 4(будет присвоено 1ParentID),

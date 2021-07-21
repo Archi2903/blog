@@ -4,34 +4,60 @@ namespace App\Http\Controllers\Blog\Admin;
 
 use App\BlogCategory;
 use App\Http\Requests\BlogCategoryUpdateRequest;
-use Illuminate\Http\Request;
+use App\Repository\BlogCategoryRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
+/**
+ * Управление категорями блога
+ *
+ * Class CategoryController
+ * @package App\Http\Controllers\Blog\Admin
+ */
 class CategoryController extends BaseController
 {
     /**
+     * @var BlogCategoryRepository
+     */
+    private $blogCategoryRepository;
+
+    /**
+     * Создание экземпляра
+     *
+     * CategoryController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
-    //вывод всех категорий
     public function index()
     {
-        $paginate = BlogCategory::paginate(5);
+//        $paginate = BlogCategory::paginate(5);
 
-        return view('blog.admin.categories.index', compact('paginate'));
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
+        return view('blog.admin.categories.index', compact('paginator'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.categories.edit', compact('categoryList', 'item'));
     }
@@ -48,10 +74,9 @@ class CategoryController extends BaseController
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }
-
-        // Создаст обьект но не добавит в БД
-//        $item = new BlogCategory($data);
-//        $item->save();
+        //Создаст обьект но не добавит в БД
+        //$item = new BlogCategory($data);
+        //$item->save();
 
         $item = (new BlogCategory())->create($data);
 
@@ -64,38 +89,40 @@ class CategoryController extends BaseController
         }
     }
 
-
-
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
+     * @param $id
+     * @param BlogCategoryRepository $categoryRepository
+     * @return Application|Factory|View
      */
-//свойство редактирования
-    public
-    function edit($id)
+    public function edit($id, BlogCategoryRepository $categoryRepository)
     {
         /*нахождение единственного значения по id(есть несколько вариантов)*/
-        $item = BlogCategory::findOrFail($id);
-        //        $item[] = BlogCategory::find($id);
-//        $item[] = BlogCategory::where('id','>', $id)->first();
-        $categoryList = BlogCategory::all();
+        //$item = BlogCategory::findOrFail($id);
+        //$item[] = BlogCategory::find($id);
+        //$item[] = BlogCategory::where('id','>', $id)->first();
+        //$categoryList = BlogCategory::all();
+
+        /* построение репозитория(Репозиторий- набор запросов к выбранной таблице БД(DAO паттерн))*
+        /* Generic Repository абстрагирование от конкретного ORM*/
+
+        // Получить обьект запись по ее id
+        $item = $this->blogCategoryRepository->getEdit($id);
+        // Получить обьекты для выпадающего списка
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param BlogCategoryUpdateRequest $request
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-//свойство Сохранения
     /*Добавили валидацию,BlogCategoryUpdateRequest новый созданный request*/
-    public
-    function update(BlogCategoryUpdateRequest $request, $id)
+    public function update(BlogCategoryUpdateRequest $request, $id)
     {
+        $item=$this->blogCategoryRepository->getEdit($id);
         /*Validate все 3 версии не корректные */
 //        $rules = [
 //            'title' => 'required|min:5|max:200',
@@ -125,7 +152,7 @@ class CategoryController extends BaseController
 //        $validatedData[] = $validator->errors();
         // вывод true или false ,на наличие ошибки true - если есть ошибка
 //        $validatedData[] = $validator->fails();
-        $item = BlogCategory::find($id);// вывод значения при выборе
+//        $item = BlogCategory::find($id);// вывод значения при выборе
         /* валидация на существование значения*/
         if (empty($item)) {      //если наше значение пустое,то возвращение назад
             return back()

@@ -17,7 +17,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($paginate as $item)
+                            @foreach($paginator as $item)
                                 <tr>
                                     <td>{{$item->id}}</td>
                                     <td>
@@ -34,13 +34,13 @@
                 </div>
             </div>
         </div>
-        @if($paginate ->total() > $paginate->count())
+        @if($paginator ->total() > $paginator->count())
             <br>
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            {{$paginate->links()}}
+                            {{$paginator->links()}}
                         </div>
                     </div>
                 </div>

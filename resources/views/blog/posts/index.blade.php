@@ -2,7 +2,7 @@
 
 @section('content')
     <table>
-        @foreach($items as $item)
+        @foreach($paginate as $item)
             <tr>
                 <td>{{$item->id}}</td>
                 <td>{{$item->title}}</td>
