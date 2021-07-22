@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class CoreRepository
  * @package App\Repository
+ *
+ * Репозиторий работы с сущностью.
+ * Может выдавать наборы данных.
+ * Не может создавать/изменять сущности
  */
 abstract class CoreRepository
 {
