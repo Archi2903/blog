@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+
+use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPostRepository;
 use Illuminate\Http\Request;
 
@@ -19,6 +21,11 @@ class PostController extends BaseController
     private $blogPostRepository;
 
     /**
+     * @var BlogCategoryRepository
+     */
+    private $blogCategoryRepository;
+
+    /**
      * Создание экземпляра
      *
      * PostController constructor.
@@ -27,6 +34,7 @@ class PostController extends BaseController
     {
         parent::__construct();
         $this->blogPostRepository = app(BlogPostRepository::class);
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
     }
 
     /**
@@ -69,7 +77,10 @@ class PostController extends BaseController
      */
     public function edit($id)
     {
-        dd(__METHOD__);
+        $item = $this->blogPostRepository->getEdit($id);
+
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
+        return view('blog.admin.posts.edit', compact('item', 'categoryList'));
     }
 
     /**
@@ -81,7 +92,17 @@ class PostController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        dd(__METHOD__);
+        dd(__METHOD__, $request->all(), $id);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return void
+     */
+    public function destroy($id)
+    {
+        dd(__METHOD__,$id,\request()->all());
+    }
 }
