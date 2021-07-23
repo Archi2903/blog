@@ -15,7 +15,7 @@ class CreateBlogCategoriesTable extends Migration
     {
         Schema::create('blog_categories', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger('parent_id')->default(1);/* unsigned - от 1 и выше,как автоинкремент */
+            $table->unsignedBigInteger('parent_id')->default(1);/* по умолчанию 1 и автоинкремент */
 
             $table->string('slug')->unique();/* название категории для URL и поэтому долно быть unique(уникальное id) уникальным*/
             $table->string('title');

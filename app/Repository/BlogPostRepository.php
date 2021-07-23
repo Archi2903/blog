@@ -33,9 +33,18 @@ class BlogPostRepository extends CoreRepository
         ];
 
         $result = $this->startConditions()
-                       ->select($colums)
-                       ->orderBy('id','DESC') // сортировка id по методу DESC то новые сначала
-                       ->paginate(25);
+            ->select($colums)
+            ->orderBy('id', 'DESC') // сортировка id по методу DESC то новые сначала
+//                ->with(['category', 'user']) // для оптимизации запроса,чтобы сортировка шла только по выбранным полям
+            ->with([
+                // второй вариант опитимизации
+                'category' => function ($query) {
+                    $query->select(['id', 'title']);
+                },
+                // можно короче
+                'user:id,name',
+            ])
+            ->paginate(25);
 
         return $result;
     }
