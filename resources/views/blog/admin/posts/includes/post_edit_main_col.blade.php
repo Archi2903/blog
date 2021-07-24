@@ -59,7 +59,16 @@
                                 @endforeach
                             </select>
                         </div>
-
+                        <div class="form-group">
+                            <label for="slug">Slug</label>
+                            <input name="title"
+                                   value="{{ old('slug',$item->slug) }} {{$item->slug}}"
+                                   id="slug"
+                                   type="text"
+                                   class="form-control"
+                                   minlength="3"
+                                   required>
+                        </div>
                         <div class="form-group">
                             <label for="excerpt">Выдержка</label>
                             <textarea name="excerpt"
@@ -78,7 +87,7 @@
                                 name="is_published"
                                 type="checkbox"
                                 class="form-check-input"
-                                value="{{$item->is_published}}"
+                                value="1"
                                 @if($item->is_published)
                                 checked="checked"
                                 @endif>

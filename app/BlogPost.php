@@ -11,6 +11,23 @@ class BlogPost extends Model
     use SoftDeletes;
 
     /**
+     * Список полей разрешенных для редактирования
+     *
+     * @var string[]
+     */
+    protected $fillable =
+        [
+            'title',
+            'slug',
+            'category_id',
+            'excerpt',
+            'content_raw',
+            'is_published',
+            'published_at',
+            'user_id',
+        ];
+
+    /**
      * Категории статьи
      *
      * @return BelongsTo
