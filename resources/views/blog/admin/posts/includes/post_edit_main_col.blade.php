@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input name="title"
-                                   value="{{ old('title',$item->title) }} {{$item->title}}"
+                                   value="{{ old('title',$item->title) }} "
                                    id="title"
                                    type="text"
                                    class="form-control"
@@ -38,7 +38,7 @@
                                       id="content_raw"
                                       class="form-control"
                                       rows="20"
-                            >{{old('content_raw',$item->content_raw)}}{{$item->content_raw}}</textarea>
+                            >{{old('content_raw',$item->content_raw)}}</textarea>
 
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <label for="slug">Slug</label>
                             <input name="title"
-                                   value="{{ old('slug',$item->slug) }} {{$item->slug}}"
+                                   value="{{ old('slug',$item->slug) }}"
                                    id="slug"
                                    type="text"
                                    class="form-control"
@@ -74,7 +74,7 @@
                             <textarea name="excerpt"
                                       id="excerpt"
                                       class="form-control"
-                                      rows="3"> {{old('excerpt',$item->excerpt)}}{{$item->excerpt}}</textarea>
+                                      rows="3"> {{old('excerpt',$item->excerpt)}}</textarea>
                         </div>
 
                         <div class="form-check">
