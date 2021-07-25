@@ -27,7 +27,7 @@
                                    id="slug"
                                    type="text"
                                    class="form-control"
-                                   required>
+                                   >
                         </div>
                         <div class="form-group">
                             <label for="parent_id">Parent</label>
@@ -51,7 +51,7 @@
                                       id="description"
                                       class="form-control"
                                       rows="3"
-                                      required> {{old('description',$item->description)}}{{$item->description}}
+                                      required> {{old('description',$item->description)}}
                             </textarea>
                         </div>
                     </div>

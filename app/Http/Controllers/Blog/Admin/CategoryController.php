@@ -71,9 +71,10 @@ class CategoryController extends BaseController
     public function store(BlogCategoryUpdateRequest $request)
     {
         $data = $request->input();
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
+        // Ушло в observer
+//        if (empty($data['slug'])) {
+//            $data['slug'] = Str::slug($data['title']);
+//        }
         //Создаст обьект но не добавит в БД
         //$item = new BlogCategory($data);
         //$item->save();
@@ -124,6 +125,7 @@ class CategoryController extends BaseController
     {
         $item=$this->blogCategoryRepository->getEdit($id);
         /*Validate все 3 версии не корректные */
+        // Перенесено в BlogCategoryUpdateRequest
 //        $rules = [
 //            'title' => 'required|min:5|max:200',
 //            'slug' => 'max:200',
@@ -161,6 +163,9 @@ class CategoryController extends BaseController
         }
         /* получение данных после редактирования*/
         $data = $request->all();
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']);
+        }
         /* перезапись в исходные поля с сохранением*/
         $result = $item->fill($data)->save();
 

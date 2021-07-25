@@ -25,6 +25,13 @@ class BlogPostObserver
     }
 
     /**
+     * @param BlogPost $blogPost
+     */
+    public function created(BlogPost $blogPost)
+    {
+    }
+
+    /**
      * Обработка перед обновлением поста
      * @param BlogPost $blogPost
      */
@@ -34,6 +41,14 @@ class BlogPostObserver
 
         $this->setSlug($blogPost);
     }
+
+    /**
+     * @param BlogPost $blogPost
+     */
+    public function updated(BlogPost $blogPost)
+    {
+    }
+
 
     /**
      * Если дата публикации не установлена - Опубликовано,
