@@ -61,13 +61,12 @@
                         </div>
                         <div class="form-group">
                             <label for="slug">Slug</label>
-                            <input name="title"
+                            <input name="slug"
                                    value="{{ old('slug',$item->slug) }}"
                                    id="slug"
                                    type="text"
                                    class="form-control"
-                                   minlength="3"
-                                   >
+                                                                      >
                         </div>
                         <div class="form-group">
                             <label for="excerpt">Выдержка</label>
