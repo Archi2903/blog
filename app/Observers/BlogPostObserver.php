@@ -4,49 +4,47 @@ namespace App\Observers;
 
 use App\BlogPost;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 
+/**
+ * Чтобы использовать observer нужно подключить его в App\Providers/AppServiceProvider в функции boot
+ * Observer - нужен для обработки записей перед CRUD операциями, убрать из контроллеров лишнюю логику
+ * Class BlogPostObserver
+ * @package App\Observers
+ */
 class BlogPostObserver
 {
     /**
-     * Handle the blog post "created" event.
-     *
+     * Обработка перед созданием Поста
      * @param BlogPost $blogPost
-     * @return void
      */
-    public function created(BlogPost $blogPost)
+    public function creating(BlogPost $blogPost)
     {
-        //
+
     }
 
     /**
-     * Handle the blog post "updated" event.
-     *
+     * Обработка перед обновлением поста
      * @param BlogPost $blogPost
-     * @return void
      */
-    public function updated(BlogPost $blogPost)
+    public function updating(BlogPost $blogPost)
     {
-        $test[]=$blogPost->isDirty();
-        $test[]=$blogPost->isDirty('is_published');
-        $test[]=$blogPost->isDirty('user_id');
-        $test[]=$blogPost->getAttribute('is_published');
-        $test[]=$blogPost->is_published;
-        $test[]=$blogPost->getOriginal('is_published');
-        dd($test);
         $this->setPublishedAt($blogPost);
+
         $this->setSlug($blogPost);
     }
 
     /**
-     * Если дата публикации не установлена и происходит установка флага - Опубликовано,
+     * Если дата публикации не установлена - Опубликовано,
      * то устанавливаем дату публикации на текущую
      *
      * @param BlogPost $blogPost
      */
     public function setPublishedAt(BlogPost $blogPost)
     {
-        if (empty($blogPost->published_at) && $blogPost->is_published) {
+        $needSetPublished = empty($blogPost->published_at) && $blogPost->is_published;
+        if ($needSetPublished) {
             $blogPost->published_at = Carbon::now();
         }
     }
@@ -63,36 +61,4 @@ class BlogPostObserver
         }
     }
 
-    /**
-     * Handle the blog post "deleted" event.
-     *
-     * @param BlogPost $blogPost
-     * @return void
-     */
-    public function deleted(BlogPost $blogPost)
-    {
-        //
-    }
-
-    /**
-     * Handle the blog post "restored" event.
-     *
-     * @param BlogPost $blogPost
-     * @return void
-     */
-    public function restored(BlogPost $blogPost)
-    {
-        //
-    }
-
-    /**
-     * Handle the blog post "force deleted" event.
-     *
-     * @param BlogPost $blogPost
-     * @return void
-     */
-    public function forceDeleted(BlogPost $blogPost)
-    {
-        //
-    }
 }

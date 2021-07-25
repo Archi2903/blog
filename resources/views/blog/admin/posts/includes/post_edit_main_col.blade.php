@@ -67,7 +67,7 @@
                                    type="text"
                                    class="form-control"
                                    minlength="3"
-                                   required>
+                                   >
                         </div>
                         <div class="form-group">
                             <label for="excerpt">Выдержка</label>
