@@ -4,6 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Проверка на авторизацию
+ * Валидация выбранных полей
+ * Class BlogCategoryUpdateRequest
+ * @package App\Http\Requests
+ */
 class BlogCategoryUpdateRequest extends FormRequest
 {
     /**

@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
-
 use App\BlogPost;
 use App\Http\Requests\BlogPostCreateRequest;
 use App\Http\Requests\BlogPostUpdateRequest;
 use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPostRepository;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Управление Статьями блога
@@ -44,8 +41,6 @@ class PostController extends BaseController
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -55,22 +50,18 @@ class PostController extends BaseController
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
         $item = new BlogPost();
-        $categoryList = $this->blogPostRepository->getForComboBox();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.posts.edit', compact('item', 'categoryList'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param BlogPostCreateRequest $request
+     * @return RedirectResponse
      */
     public function store(BlogPostCreateRequest $request)
     {
@@ -88,9 +79,7 @@ class PostController extends BaseController
 
     /**
      * Show the form for editing the specified resource.
-     *
      * @param int $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -103,9 +92,9 @@ class PostController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param BlogPostUpdateRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(BlogPostUpdateRequest $request, $id)
     {
@@ -147,8 +136,7 @@ class PostController extends BaseController
      * @param int $id
      * @return void
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
         dd(__METHOD__, $id, \request()->all());
     }

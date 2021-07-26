@@ -3,11 +3,13 @@
 namespace App\Repository;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CoreRepository
  * @package App\Repository
+ * 2вида Репозиторий
+ * - набор запросов к выбранной таблице БД(DAO паттерн))
+ * - Generic Repository абстрагирование от конкретного ORM
  *
  * Репозиторий работы с сущностью.
  * Может выдавать наборы данных.

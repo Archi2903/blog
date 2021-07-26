@@ -5,14 +5,28 @@ namespace App\Observers;
 use App\BlogCategory;
 use Illuminate\Support\Str;
 
+/**
+ * Чтобы использовать observer нужно подключить его в App\Providers/AppServiceProvider в функции boot
+ * Observer - нужен для обработки записей перед ибо после CRUD операций, убрает из контроллеров лишнюю логику
+ * Class BlogCategoryObserver
+ * @package App\Observers
+ */
 class BlogCategoryObserver
 {
 
+    /**
+     * Предустановка перед созданием category
+     * @param BlogCategory $blogCategory
+     */
     public function creating(BlogCategory $blogCategory)
     {
         $this->setSlug($blogCategory);
     }
 
+    /**
+     * Прописывает title, если slug пустой при заполнении
+     * @param BlogCategory $blogCategory
+     */
     protected function setSlug(BlogCategory $blogCategory)
     {
         if (empty($blogCategory->slug)) {
@@ -30,6 +44,10 @@ class BlogCategoryObserver
         //
     }
 
+    /**
+     * Предустановка перед обновлением category
+     * @param BlogCategory $blogCategory
+     */
     public function updating(BlogCategory $blogCategory)
     {
         $this->setSlug($blogCategory);

@@ -24,7 +24,9 @@
                                         <a href="{{route('blog.admin.categories.edit', $item)}}">{{$item->title}}</a>
                                     </td>
                                     <td @if(in_array($item->parent_id,[0,1])) style="color: #ffe924"@endif>
-                                        {{$item->parent_id}}
+                                        {{$item->parentCategory->title ?? '?'}}
+
+{{--                                        {{$item->parentTitle}}--}}
                                     </td>
                                 </tr>
                             @endforeach

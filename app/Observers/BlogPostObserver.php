@@ -55,9 +55,8 @@ class BlogPostObserver
 
 
     /**
-     * Если дата публикации не установлена - Опубликовано,
-     * то устанавливаем дату публикации на текущую
-     *
+     * Если дата публикации не установлена и опубликована запись,
+     * то устанавливаемая дата публикации - текущее время
      * @param BlogPost $blogPost
      */
     public function setPublishedAt(BlogPost $blogPost)
@@ -70,7 +69,6 @@ class BlogPostObserver
 
     /**
      * Если поле слаг пустое,то заполняем его конвертацией заголовка
-     *
      * @param BlogPost $blogPost
      */
     public function setSlug(BlogPost $blogPost)
@@ -82,13 +80,12 @@ class BlogPostObserver
 
     /**
      * Установка значения поля content_html после изменения content_raw
-     *
      * @param BlogPost $blogPost
      */
     public function setHTML(BlogPost $blogPost)
     {
         if ($blogPost->isDirty('content_raw')) {
-            $blogPost->content_html = $blogPost->coontent_raw;
+            $blogPost->content_html = $blogPost->content_raw;
         }
     }
 

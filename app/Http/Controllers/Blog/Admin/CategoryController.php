@@ -8,13 +8,11 @@ use App\Repository\BlogCategoryRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
 /**
  * Управление категорями блога
- *
  * Class CategoryController
  * @package App\Http\Controllers\Blog\Admin
  */
@@ -27,7 +25,6 @@ class CategoryController extends BaseController
 
     /**
      * Создание экземпляра
-     *
      * CategoryController constructor.
      */
     public function __construct()
@@ -39,20 +36,22 @@ class CategoryController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View
+     * @return Application|Factory
      */
     public function index()
     {
-//        $paginate = BlogCategory::paginate(5);
+        //Вариант вывода без использования репозитория
 
-        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
+
+        //$paginate = BlogCategory::paginate(5);
+
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate();
         return view('blog.admin.categories.index', compact('paginator'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -63,18 +62,13 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return Response
+     * Store a newly created resource in storage
+     * @param BlogCategoryUpdateRequest $request
+     * @return RedirectResponse
      */
     public function store(BlogCategoryUpdateRequest $request)
     {
         $data = $request->input();
-        // Ушло в observer
-//        if (empty($data['slug'])) {
-//            $data['slug'] = Str::slug($data['title']);
-//        }
         //Создаст обьект но не добавит в БД
         //$item = new BlogCategory($data);
         //$item->save();
@@ -91,6 +85,7 @@ class CategoryController extends BaseController
     }
 
     /**
+     * Редактируем используя репозиторий
      * @param $id
      * @param BlogCategoryRepository $categoryRepository
      * @return Application|Factory|View
@@ -103,11 +98,19 @@ class CategoryController extends BaseController
         //$item[] = BlogCategory::where('id','>', $id)->first();
         //$categoryList = BlogCategory::all();
 
-        /* построение репозитория(Репозиторий- набор запросов к выбранной таблице БД(DAO паттерн))*
-        /* Generic Repository абстрагирование от конкретного ORM*/
-
         // Получить обьект запись по ее id
         $item = $this->blogCategoryRepository->getEdit($id);
+//        $v['before']=$item->title;
+//        $item->title='ASASsasasAS sadsadasd 121540';
+//        $v['title_after']=$item->title;
+//        $v['getAttribute']=$item->getAttribute('title');
+//        $v['attributesToArray']=$item->attributesToArray();
+////        $v['attributes']=$item->attributes['title'];
+//        $v['getAttributeValue']=$item->getAttributeValue('title');
+//        $v['getMutatedAttributes']=$item->getMutatedAttributes();
+//        $v['hasGetMutator for title']=$item->hasGetMutator('title');
+//        $v['toArray']=$item->toArray;
+//        dd($v,$item);
         // Получить обьекты для выпадающего списка
         $categoryList = $this->blogCategoryRepository->getForComboBox();
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
@@ -123,20 +126,8 @@ class CategoryController extends BaseController
     /*Добавили валидацию,BlogCategoryUpdateRequest новый созданный request*/
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        $item=$this->blogCategoryRepository->getEdit($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
         /*Validate все 3 версии не корректные */
-        // Перенесено в BlogCategoryUpdateRequest
-//        $rules = [
-//            'title' => 'required|min:5|max:200',
-//            'slug' => 'max:200',
-//            'description' => 'string|max:500|min:3',
-//            'parent_id' => 'required|integer|exists:blog_categories,id',
-//        ];
-        // 1 version validate
-        // $validatedData=$this->validate($request,$rules);
-        // 2 version validate
-        //$validatedData = $request->validate($rules);
-        //dd($validatedData);
         // 3 version validate
         //Create class validator
 //        $validator = \Validator::make($request->all(), $rules);

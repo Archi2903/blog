@@ -68,12 +68,6 @@ class BlogPostRepository extends CoreRepository
         ]);
 
 //        $result[]=$this->startConditions()->all();
-//        $result[]=$this
-//            ->startConditions()
-//            ->select('blog_categories.*',
-//            \DB::raw('CONCAT (id,". ", title) AS id_title'))
-//            ->toBase()
-//            ->get();
         return $this
             ->startConditions()
             ->selectRaw($colums)
