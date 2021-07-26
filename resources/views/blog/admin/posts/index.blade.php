@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        @include('blog.admin.posts.includes.result_messages')
         <div class="row justify-content-center">
             <div class="coll-md-12">
                 <nav class="navbar navbar-toggler-md navbar-dark bg-dark">

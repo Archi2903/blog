@@ -51,6 +51,24 @@ class BlogPostObserver
      */
     public function updated(BlogPost $blogPost)
     {
+
+    }
+
+    /**
+     * @param BlogPost $blogPost
+     */
+    public function deleting(BlogPost $blogPost)
+    {
+//        dd(__METHOD__,$blogPost);
+//        return false;
+    }
+
+    /**
+     * @param BlogPost $blogPost
+     */
+    public function deleted(BlogPost $blogPost)
+    {
+//        dd(__METHOD__, $blogPost);
     }
 
 
