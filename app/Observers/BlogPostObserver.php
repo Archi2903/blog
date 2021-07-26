@@ -21,6 +21,10 @@ class BlogPostObserver
      */
     public function creating(BlogPost $blogPost)
     {
+        $this->setPublishedAt($blogPost);
+        $this->setSlug($blogPost);
+        $this->setHTML($blogPost);
+        $this->setUser($blogPost);
 
     }
 
@@ -74,6 +78,27 @@ class BlogPostObserver
         if (empty($blogPost->slug)) {
             $blogPost->slug = Str::slug($blogPost->title);
         }
+    }
+
+    /**
+     * Установка значения поля content_html после изменения content_raw
+     *
+     * @param BlogPost $blogPost
+     */
+    public function setHTML(BlogPost $blogPost)
+    {
+        if ($blogPost->isDirty('content_raw')) {
+            $blogPost->content_html = $blogPost->coontent_raw;
+        }
+    }
+
+    /**
+     * Если не указан user_id , то прописываем по умолчанию
+     * @param BlogPost $blogPost
+     */
+    public function setUser(BlogPost $blogPost)
+    {
+        $blogPost->user_id = auth()->id() ?? BlogPost::UNKNOWN_USER;
     }
 
 }

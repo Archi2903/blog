@@ -10,6 +10,8 @@ class BlogPost extends Model
 {
     use SoftDeletes;
 
+    const UNKNOWN_USER = 1;
+
     /**
      * Список полей разрешенных для редактирования
      *
