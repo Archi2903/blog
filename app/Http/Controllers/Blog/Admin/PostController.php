@@ -139,9 +139,9 @@ class PostController extends BaseController
     public function destroy($id)
     {
         //Удаление ,но в БД остается
-//        $result = BlogPost::destroy($id);
+        $result = BlogPost::destroy($id);
         // ПОЛНОЕ УДАЛЕНИЕ!!!!
-        $result=BlogPost::find($id)->forceDelete();
+//        $result=BlogPost::find($id)->forceDelete();
 
         if ($result) {
             return redirect()
