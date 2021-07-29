@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\BlogPost;
 use App\Http\Requests\BlogPostCreateRequest;
 use App\Http\Requests\BlogPostUpdateRequest;
+use App\Jobs\BlogPostAfterCreateJob;
+use App\Jobs\BlogPostAfterDeleteJob;
 use App\Repository\BlogCategoryRepository;
 use App\Repository\BlogPostRepository;
 use Illuminate\Http\RedirectResponse;
@@ -17,19 +19,13 @@ use Illuminate\Http\RedirectResponse;
  */
 class PostController extends BaseController
 {
-    /**
-     * @var BlogPostRepository
-     */
+
     private $blogPostRepository;
 
-    /**
-     * @var BlogCategoryRepository
-     */
     private $blogCategoryRepository;
 
     /**
      * Создание экземпляра
-     *
      * PostController constructor.
      */
     public function __construct()
@@ -60,6 +56,7 @@ class PostController extends BaseController
     }
 
     /**
+     * Store a newly created resource in storage.
      * @param BlogPostCreateRequest $request
      * @return RedirectResponse
      */
@@ -69,6 +66,10 @@ class PostController extends BaseController
         $item = (new BlogPost())->create($data);
 
         if ($item) {
+            // Jobs
+            $job=new BlogPostAfterCreateJob($item);
+            $this->dispatch($job);
+
             return redirect()->route('blog.admin.posts.edit', [$item->id])
                 ->with(['success' => 'Успешно сохранено!']);
         } else {
@@ -144,6 +145,15 @@ class PostController extends BaseController
 //        $result=BlogPost::find($id)->forceDelete();
 
         if ($result) {
+            //Варианты запуска очереди
+            //выполнит очередь через 20 сек
+            BlogPostAfterDeleteJob::dispatch($id)->delay(20);
+//            BlogPostAfterDeleteJob::dispatchNow($id);
+//            $this->dispatch(new BlogPostAfterDeleteJob($id));
+//            $this->dispatchNow(new BlogPostAfterDeleteJob($id));
+//            $job=new BlogPostAfterDeleteJob($id);
+//            $job->handle();
+
             return redirect()
                 ->route('blog.admin.posts.index')
                 ->with(['success' => "Запись id [$id] удалена!"]);
